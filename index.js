@@ -1,18 +1,18 @@
 // index.js
 require('dotenv').config();
-const express = require('express');
-const cors = require('cors');
-const mongoose = require('mongoose');
-const { Parser } = require('json2csv');
+import express, { json } from 'express';
+import cors from 'cors';
+import { connect, Schema, model } from 'mongoose';
+import { Parser } from 'json2csv';
 const app = express();
 const PORT = process.env.PORT || 3001;
 
 app.use(cors());
-app.use(express.json());
+app.use(json());
 
 const MONGODB_URI = process.env.MONGODB_URI;
 
-mongoose.connect(MONGODB_URI, {
+connect(MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
@@ -36,7 +36,7 @@ function parseNumber(v) {
 }
 
 // Define Mongoose schema with all variables
-const airlineDataSchema = new mongoose.Schema({
+const airlineDataSchema = new Schema({
   YEAR: { type: Number, get: parseNumber },
   QUARTER: { type: Number, get: parseNumber },
   UNIQUE_CARRIER: String,
@@ -99,10 +99,10 @@ const airlineDataSchema = new mongoose.Schema({
   toObject: { getters: true },
 });
 
-const AirlineData = mongoose.model('AirlineData', airlineDataSchema, 'data'); // 'data' is the collection name
+const AirlineData = model('AirlineData', airlineDataSchema, 'data'); // 'data' is the collection name
 
 // Define Mongoose schema for stock data
-const stockDataSchema = new mongoose.Schema({
+const stockDataSchema = new Schema({
   UNIQUE_CARRIER_NAME: String,
   Date: { type: Date },
   Open: { type: Number, get: parseNumber },
@@ -116,9 +116,9 @@ const stockDataSchema = new mongoose.Schema({
   toObject: { getters: true },
 });
 
-const StockData = mongoose.model('StockData', stockDataSchema, 'stock_data'); // 'stock_data' is the collection name
+const StockData = model('StockData', stockDataSchema, 'stock_data'); // 'stock_data' is the collection name
 
-const operatingDataSchema = new mongoose.Schema({
+const operatingDataSchema = new Schema({
   PILOT_FLY_OPS: { type: Number, get: parseNumber },
   OTH_FLT_FLY_OPS: { type: Number, get: parseNumber },
   TRAIN_FLY_OPS: { type: Number, get: parseNumber },
@@ -202,9 +202,9 @@ const operatingDataSchema = new mongoose.Schema({
 });
 
 // Create the Mongoose model
-const OperatingData = mongoose.model('OperatingData', operatingDataSchema, 'operating');
+const OperatingData = model('OperatingData', operatingDataSchema, 'operating');
 
-const operatingDataExtendedSchema = new mongoose.Schema({
+const operatingDataExtendedSchema = new Schema({
   // Salary Columns
   SALARIES_MGT: { type: Number, get: parseNumber },
   SALARIES_FLIGHT: { type: Number, get: parseNumber },
@@ -287,10 +287,10 @@ const operatingDataExtendedSchema = new mongoose.Schema({
 });
 
 // Create the Mongoose model
-const OperatingDataExtended = mongoose.model('OperatingDataExtended', operatingDataExtendedSchema, 'operatingdataextended');
+const OperatingDataExtended = model('OperatingDataExtended', operatingDataExtendedSchema, 'operatingdataextended');
 
 // New Schema for Balance Sheets
-const balanceSheetsSchema = new mongoose.Schema({
+const balanceSheetsSchema = new Schema({
   AIRLINE_ID: { type: Number, get: parseNumber },
   UNIQUE_CARRIER_NAME: String,
   YEAR: { type: Number, get: parseNumber },
@@ -368,7 +368,7 @@ const balanceSheetsSchema = new mongoose.Schema({
   toObject: { getters: true },
 });
 
-const BalanceSheets = mongoose.model('BalanceSheets', balanceSheetsSchema, 'balanceSheets');
+const BalanceSheets = model('BalanceSheets', balanceSheetsSchema, 'balanceSheets');
 
 // List of airlines with IDs matching the frontend
 const airlines = [
