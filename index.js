@@ -1,9 +1,11 @@
 // index.js
-require('dotenv').config();
+import dotenv from 'dotenv';
 import express, { json } from 'express';
 import cors from 'cors';
-import { connect, Schema, model } from 'mongoose';
+import mongoose, { Schema, model } from 'mongoose';
 import { Parser } from 'json2csv';
+
+dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3001;
 
