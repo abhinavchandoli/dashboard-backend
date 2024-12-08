@@ -9,7 +9,13 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-app.use(cors());
+// Define CORS options
+const corsOptions = {
+  origin: 'https://airline-dashboard-chi.vercel.app', // Replace with your actual frontend URL
+  optionsSuccessStatus: 200,
+};
+
+app.use(cors(corsOptions));
 app.use(json());
 
 const MONGODB_URI = process.env.MONGODB_URI;
