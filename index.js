@@ -2,7 +2,7 @@
 import dotenv from 'dotenv';
 import express, { json } from 'express';
 import cors from 'cors';
-import mongoose, { Schema, model } from 'mongoose';
+import { connect, Schema, model } from 'mongoose';
 import { Parser } from 'json2csv';
 
 dotenv.config();
