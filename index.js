@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 3001;
 
 // Define CORS options
 const corsOptions = {
-  origin: 'https://airline-dashboard-chi.vercel.app', // Replace with your actual frontend URL
+  origin: 'https://www.airfineco.com/', // Replace with your actual frontend URL
   optionsSuccessStatus: 200,
 };
 
