@@ -13,6 +13,7 @@ const PORT = process.env.PORT || 3001;
 const corsOptions = {
   origin: 'https://www.airfineco.com', // Replace with your actual frontend URL
   optionsSuccessStatus: 200,
+  exposedHeaders: ['Content-Disposition'], 
 };
 
 app.use(cors(corsOptions));
@@ -714,9 +715,10 @@ app.get('/api/download/:collectionName', async (req, res) => {
     const csv = json2csvParser.parse(data);
 
     // Set headers for CSV download
-    res.header('Content-Type', 'text/csv');
-    res.attachment(`${collectionName}.csv`);
-    return res.send(csv);
+    res.setHeader('Content-Type', 'text/csv');
+    res.setHeader('Content-Disposition', `attachment; filename="${collectionName}.csv"`);
+
+    return res.status(200).send(csv);
   } catch (err) {
     console.error(`Error generating CSV for ${collectionName}:`, err);
     return res.status(500).send('Failed to generate CSV file');
