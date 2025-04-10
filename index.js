@@ -9,11 +9,21 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// Define CORS options
+const allowedOrigins = [
+  'https://www.airfineco.com',
+  'https://airfineco.com',
+];
+
 const corsOptions = {
-  origin: '*', // Replace with your actual frontend URL
+  origin: (origin, callback) => {
+    if (allowedOrigins.includes(origin) || !origin) { 
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   optionsSuccessStatus: 200,
-  exposedHeaders: ['Content-Disposition'], 
+  exposedHeaders: ['Content-Disposition'],
 };
 
 app.use(cors(corsOptions));
